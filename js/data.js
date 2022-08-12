@@ -52,57 +52,58 @@ const MAX_LONGITUDE = 35.70000;
 const MIN_LATIITUDE = 35.65000;
 const MAX_LATIITUDE = 35.70000;
 const NUMBER_COUNT_AFTER_DOT = 5;
-const OFFER_ARRAY_COUNT = 10;
+const OFFER_COUNT = 10;
 
-const createOfferObject = (i) => {
-  const location = {
-    x: getRandomFraction(MIN_LONGITUDE, MAX_LONGITUDE, NUMBER_COUNT_AFTER_DOT),
-    y: getRandomFraction(MIN_LATIITUDE, MAX_LATIITUDE, NUMBER_COUNT_AFTER_DOT)
-  };
-  const address = `${location.x} ${location.y}`;
+const createAvatars = (i) => `img/avatars/user${(i + 1).toString().padStart(2, 0)}.png`;
+
+const createFeatures = () => {
   const features = [];
-
-  for (let j = 0; j <= getRandomInt(0, FEATURES.length - 1); j++) {
-    features.push(FEATURES[j]);
+  for (let i = 0; i <= getRandomInt(0, FEATURES.length - 1); i++) {
+    features.push(FEATURES[i]);
   }
-
-  const photos = [];
-
-  for (let k = 0; k <= getRandomInt(0, PHOTOS.length - 1); k++) {
-    photos.push(PHOTOS[k]);
-  }
-
-  return {
-    author: {
-      avatar: `img/avatars/user${(i + 1).toString().padStart(2, 0)}.png`
-    },
-    offer: {
-      title: getRandomArrayElement(TITLES),
-      address: address,
-      price: getRandomInt(MIN_PRICE, MAX_PRICE),
-      type: getRandomArrayElement(TYPES),
-      rooms: getRandomInt(1, MAX_ROOM),
-      guests: getRandomInt(1, MAX_GUEST),
-      checkin: getRandomArrayElement(CHECKIN),
-      checkout: getRandomArrayElement(CHECKOUT),
-      features: features,
-      description: getRandomArrayElement(DESCRIPTIONS),
-      photos: photos
-    },
-    location: location
-  };
-
+  return features;
 };
 
-const createOfferArray = () => {
+const createPhotos = ()=> {
+  const photos = [];
+  for (let i = 0; i <= getRandomInt(0, PHOTOS.length - 1); i++) {
+    photos.push(PHOTOS[i]);
+  }
+  return photos;
+};
+
+const createOffer = (i) => ({
+  author: {
+    avatar: createAvatars(i)
+  },
+  offer: {
+    title: getRandomArrayElement(TITLES),
+    address: `${getRandomFraction(MIN_LONGITUDE, MAX_LONGITUDE, NUMBER_COUNT_AFTER_DOT)} ${getRandomFraction(MIN_LATIITUDE, MAX_LATIITUDE, NUMBER_COUNT_AFTER_DOT)}`,
+    price: getRandomInt(MIN_PRICE, MAX_PRICE),
+    type: getRandomArrayElement(TYPES),
+    rooms: getRandomInt(1, MAX_ROOM),
+    guests: getRandomInt(1, MAX_GUEST),
+    checkin: getRandomArrayElement(CHECKIN),
+    checkout: getRandomArrayElement(CHECKOUT),
+    features: createFeatures(),
+    description: getRandomArrayElement(DESCRIPTIONS),
+    photos: createPhotos()
+  },
+  location: {
+    x: getRandomFraction(MIN_LONGITUDE, MAX_LONGITUDE, NUMBER_COUNT_AFTER_DOT),
+    y: getRandomFraction(MIN_LATIITUDE, MAX_LATIITUDE, NUMBER_COUNT_AFTER_DOT)
+  }
+});
+
+const createOffers = () => {
   const offers = [];
 
-  for (let i = 0; i < OFFER_ARRAY_COUNT; i++) {
-    const offer = createOfferObject(i);
+  for (let i = 0; i < OFFER_COUNT; i++) {
+    const offer = createOffer(i);
     offers.push(offer);
   }
 
   return offers;
 };
 
-export { createOfferArray };
+export { createOffers };
