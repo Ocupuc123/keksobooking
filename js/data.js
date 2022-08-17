@@ -52,7 +52,7 @@ const MAX_LONGITUDE = 35.70000;
 const MIN_LATIITUDE = 35.65000;
 const MAX_LATIITUDE = 35.70000;
 const NUMBER_COUNT_AFTER_DOT = 5;
-const OFFER_COUNT = 10;
+const OFFER_COUNT = 8;
 
 const createAvatars = (i) => `img/avatars/user${(i + 1).toString().padStart(2, 0)}.png`;
 
