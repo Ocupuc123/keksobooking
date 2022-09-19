@@ -1026,3 +1026,13 @@ fieldset {
 .hidden {
   display: none;
 }
+
+.is-error input,
+.is-error select {
+  border-color: #d8544f;
+  background-color: #f9e2e2;
+}
+
+.is-error label {
+  color: #d8544f;
+}

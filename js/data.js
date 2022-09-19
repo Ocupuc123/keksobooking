@@ -49,10 +49,11 @@ const MAX_ROOM = 5;
 const MAX_GUEST = 4;
 const MIN_LONGITUDE = 35.65000;
 const MAX_LONGITUDE = 35.70000;
-const MIN_LATIITUDE = 35.65000;
-const MAX_LATIITUDE = 35.70000;
+const MIN_LATIITUDE = 139.70000;
+const MAX_LATIITUDE = 139.80000;
 const NUMBER_COUNT_AFTER_DOT = 5;
 const OFFER_COUNT = 8;
+
 
 const createAvatars = (i) => `img/avatars/user${(i + 1).toString().padStart(2, 0)}.png`;
 
@@ -72,28 +73,33 @@ const createPhotos = ()=> {
   return photos;
 };
 
-const createOffer = (i) => ({
-  author: {
-    avatar: createAvatars(i)
-  },
-  offer: {
-    title: getRandomArrayElement(TITLES),
-    address: `${getRandomFraction(MIN_LONGITUDE, MAX_LONGITUDE, NUMBER_COUNT_AFTER_DOT)} ${getRandomFraction(MIN_LATIITUDE, MAX_LATIITUDE, NUMBER_COUNT_AFTER_DOT)}`,
-    price: getRandomInt(MIN_PRICE, MAX_PRICE),
-    type: getRandomArrayElement(TYPES),
-    rooms: getRandomInt(1, MAX_ROOM),
-    guests: getRandomInt(1, MAX_GUEST),
-    checkin: getRandomArrayElement(CHECKIN),
-    checkout: getRandomArrayElement(CHECKOUT),
-    features: createFeatures(),
-    description: getRandomArrayElement(DESCRIPTIONS),
-    photos: createPhotos()
-  },
-  location: {
-    x: getRandomFraction(MIN_LONGITUDE, MAX_LONGITUDE, NUMBER_COUNT_AFTER_DOT),
-    y: getRandomFraction(MIN_LATIITUDE, MAX_LATIITUDE, NUMBER_COUNT_AFTER_DOT)
-  }
-});
+const createOffer = (i) => {
+  const locationX = getRandomFraction(MIN_LONGITUDE, MAX_LONGITUDE, NUMBER_COUNT_AFTER_DOT);
+  const locationY = getRandomFraction(MIN_LATIITUDE, MAX_LATIITUDE, NUMBER_COUNT_AFTER_DOT);
+
+  return {
+    author: {
+      avatar: createAvatars(i)
+    },
+    offer: {
+      title: getRandomArrayElement(TITLES),
+      address: `${locationX} ${locationY}`,
+      price: getRandomInt(MIN_PRICE, MAX_PRICE),
+      type: getRandomArrayElement(TYPES),
+      rooms: getRandomInt(1, MAX_ROOM),
+      guests: getRandomInt(1, MAX_GUEST),
+      checkin: getRandomArrayElement(CHECKIN),
+      checkout: getRandomArrayElement(CHECKOUT),
+      features: createFeatures(),
+      description: getRandomArrayElement(DESCRIPTIONS),
+      photos: createPhotos()
+    },
+    location: {
+      x: locationX,
+      y: locationY
+    }
+  };
+};
 
 const createOffers = () => {
   const offers = [];
