@@ -1027,12 +1027,12 @@ fieldset {
   display: none;
 }
 
-.is-error input,
-.is-error select {
+.is-invalid input,
+.is-invalid select {
   border-color: #d8544f;
   background-color: #f9e2e2;
 }
 
-.is-error label {
+.is-invalid label {
   color: #d8544f;
 }

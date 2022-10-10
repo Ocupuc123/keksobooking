@@ -1,4 +1,4 @@
-const ERROR_CLASS = 'is-error';
+const ERROR_CLASS = 'is-invalid';
 const MAX_PRICE_VALUE = 1000000;
 const TitleLength = {
   MIN: 30,
@@ -11,62 +11,65 @@ const RoomsOptions = {
   '100': ['0']
 };
 
+const addErrorClass = (input) => {
+  const parentElement = input.parentElement;
 
-const form = document.querySelector('.ad-form');
-
-const isValidField = (input) => input.validity.valid;
-
-const isErrorField = (input) => {
-  const parent = input.parentElement;
-
-  if (isValidField(input)) {
-    parent.classList.remove(ERROR_CLASS);
-  } else {
-    parent.classList.add(ERROR_CLASS);
-  }
+  parentElement.classList.add(ERROR_CLASS);
 };
 
-const checkTitle = (input) => {
-  const valueLength = input.value.length;
+const removeErrorClass = (input) => {
+  const parentElement = input.parentElement;
+
+  parentElement.classList.remove(ERROR_CLASS);
+};
+
+const titleInput = document.querySelector('#title');
+
+titleInput.addEventListener('input', (evt) => {
+  const valueLength = titleInput.value.length;
 
   if (valueLength < TitleLength.MIN) {
-    input.setCustomValidity(`Ещё ${TitleLength.MIN - valueLength} симв.`);
+    addErrorClass(evt.target);
   } else if (valueLength > TitleLength.MAX) {
-    input.setCustomValidity(`Удалите лишние ${valueLength - TitleLength.MAX} симв.`);
+    addErrorClass(evt.target);
   } else {
-    input.setCustomValidity('');
+    removeErrorClass(evt.target);
   }
 
-  isErrorField(input);
-  input.reportValidity();
-};
-
-const titleInput = form.querySelector('#title');
-titleInput.addEventListener('input', () => {
-  checkTitle(titleInput);
+  evt.target.reportValidity();
 });
 
-const checkPrice = (input) => {
-  const vlaue = +input.value;
+titleInput.addEventListener('invalid', (evt) => {
+  if (evt.target.validity.valueMissing) {
+    addErrorClass(evt.target);
+  }
+});
 
-  if (vlaue > MAX_PRICE_VALUE) {
-    input.setCustomValidity(`Цена не может быть больше ${MAX_PRICE_VALUE}`);
+const priceInput = document.querySelector('#price');
+
+priceInput.addEventListener('invalid', (evt) => {
+  if (evt.target.validity.valueMissing) {
+    addErrorClass(evt.target);
+  }
+});
+
+priceInput.addEventListener('input', (evt) => {
+  const value = +evt.target.value;
+  const minValue = +evt.target.getAttribute('min');
+
+  if (value < minValue || value > MAX_PRICE_VALUE) {
+    addErrorClass(evt.target);
   } else {
-    input.setCustomValidity('');
+    removeErrorClass(evt.target);
   }
 
-  isErrorField(input);
-  input.reportValidity();
-};
-
-const priceInput = form.querySelector('#price');
-priceInput.addEventListener('input', () => {
-  checkPrice(priceInput);
+  evt.target.reportValidity();
 });
 
 const checkRooms = (rooms, capacity) => {
+  const capacityOptions = capacity.options;
 
-  [...capacity.options].forEach((option) => {
+  [...capacityOptions].forEach((option) => {
     if (!RoomsOptions[rooms.value].includes(option.value)) {
       option.setAttribute('disabled', '');
     } else {
@@ -75,18 +78,17 @@ const checkRooms = (rooms, capacity) => {
   });
 
   if (!RoomsOptions[rooms.value].includes(capacity.value)) {
-    capacity.setCustomValidity('Выберите подходящее число гостей');
+    addErrorClass(capacity);
   } else {
-    capacity.setCustomValidity('');
+    removeErrorClass(capacity);
   }
 
-  isErrorField(capacity);
   capacity.reportValidity();
-  return isValidField(capacity);
 };
 
-const roomNumberSelect = form.querySelector('#room_number');
-const capacitySelect = form.querySelector('#capacity');
+const roomNumberSelect = document.querySelector('#room_number');
+const capacitySelect = document.querySelector('#capacity');
+
 roomNumberSelect.addEventListener('change', () => {
   checkRooms(roomNumberSelect, capacitySelect);
 });
@@ -95,16 +97,15 @@ capacitySelect.addEventListener('change', () => {
   checkRooms(roomNumberSelect, capacitySelect);
 });
 
-form.addEventListener('submit', (evt) => {
-  let valid = true;
+const formButtonSubmit = document.querySelector('.ad-form__submit');
+
+formButtonSubmit.addEventListener('click', (evt) => {
+  const form = document.querySelector('.ad-form');
+  const isValidForm = form.checkValidity();
 
   checkRooms(roomNumberSelect, capacitySelect);
 
-  if (!checkRooms(roomNumberSelect, capacitySelect)) {
-    valid = false;
-  }
-
-  if (!valid) {
+  if (!isValidForm) {
     evt.preventDefault();
   }
 });
