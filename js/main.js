@@ -6,19 +6,18 @@ if (!isLoadMap) {
   inactiveStatePage();
 }
 
-const onReset = () => {
-  formReset();
-  setDefaultMarkerPosition();
-};
-
-const onSuccess = () => {
-  onReset();
-  showMessage('success');
-};
-
-const onFail = () => {
-  showMessage('error');
-};
-
-formSubmitHandler(onSuccess, onFail);
-formResetButtonHandler(onReset);
+formSubmitHandler(
+  () => {
+    formReset();
+    setDefaultMarkerPosition();
+    showMessage('success');
+  },
+  () => {
+    showMessage('error');
+  });
+formResetButtonHandler(
+  () => {
+    formReset();
+    setDefaultMarkerPosition();
+  }
+);

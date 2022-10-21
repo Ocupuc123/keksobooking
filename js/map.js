@@ -1,18 +1,16 @@
-import { getData } from './api.js';
+import { getOffers } from './api.js';
 import { renderSimilarOffer } from './similar-offer.js';
-import { showAlert } from './util.js';
 
 /* global L:readonly */
 const MAX_SIMILAR_OFFER_COUNT = 10;
 const ZOOM = 13;
 const TokyoCoordinates = {
-  latitude: 35.68283,
-  longitude: 139.75945
+  LATITUDE: 35.68283,
+  LONGITUDE: 139.75945
 };
 const adForm = document.querySelector('.ad-form');
 const addressInput = adForm.querySelector('#address');
-const { latitude, longitude } = TokyoCoordinates;
-const position = [latitude, longitude];
+const position = [TokyoCoordinates.LATITUDE, TokyoCoordinates.LONGITUDE];
 
 let isLoadMap = false;
 
@@ -20,30 +18,30 @@ const map = L.map('map-canvas', {
   scrollWheelZoom: false
 });
 
+const createSimilarOffer = async () => {
+  const offers = await getOffers();
+  offers.slice(0, MAX_SIMILAR_OFFER_COUNT).forEach((offer) => {
+
+    const icon = L.icon({
+      iconUrl: '../leaflet/img/pin.svg',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+    });
+
+    const marker = L.marker([offer.location.lat, offer.location.lng], {
+      icon: icon
+    });
+
+    marker
+      .addTo(map)
+      .bindPopup(renderSimilarOffer(offer));
+  });
+};
+
 map.on('load', () => {
   isLoadMap = true;
 
-  getData(
-    (offers) => {
-      offers.slice(0, MAX_SIMILAR_OFFER_COUNT).forEach((offer) => {
-
-        const icon = L.icon({
-          iconUrl: '../leaflet/img/pin.svg',
-          iconSize: [40, 40],
-          iconAnchor: [20, 40],
-        });
-
-        const marker = L.marker([offer.location.lat, offer.location.lng], {
-          icon: icon
-        });
-
-        marker
-          .addTo(map)
-          .bindPopup(renderSimilarOffer(offer));
-      });
-    },
-    () => showAlert('При загрузке данных возникла ошибка')
-  );
+  createSimilarOffer();
 });
 
 map.setView(position, ZOOM);

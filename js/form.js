@@ -96,11 +96,11 @@ const formSubmitHandler = (onSuccess, onFail) => {
   });
 };
 
-const formResetButtonHandler = (onReset) => {
+const formResetButtonHandler = (cb) => {
   adFormResetButton.addEventListener('click', (evt) => {
     evt.preventDefault();
 
-    onReset();
+    cb();
   });
 };
 
