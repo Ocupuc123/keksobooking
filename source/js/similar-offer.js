@@ -1,9 +1,6 @@
 const similarOfferTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-const renderSimilarOffer = ((similarOffers) => {
-
-  const { author, offer } = similarOffers;
-
+const renderSimilarOffer = ({ author, offer }) => {
   const offerElement = similarOfferTemplate.cloneNode(true);
 
   const getType = (type) => {
@@ -52,6 +49,6 @@ const renderSimilarOffer = ((similarOffers) => {
   }
 
   return offerElement;
-});
+};
 
 export { renderSimilarOffer };

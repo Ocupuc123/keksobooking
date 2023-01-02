@@ -1,15 +1,23 @@
 const ERROR_CLASS = 'is-invalid';
 const MAX_PRICE_VALUE = 1000000;
+
 const TitleLength = {
   MIN: 30,
   MAX: 100
 };
+
 const RoomsOptions = {
   '1': ['1'],
   '2': ['2', '1'],
   '3': ['3', '2', '1'],
   '100': ['0']
 };
+
+const titleInput = document.querySelector('#title');
+const priceInput = document.querySelector('#price');
+const roomNumberSelect = document.querySelector('#room_number');
+const capacitySelect = document.querySelector('#capacity');
+const formButtonSubmit = document.querySelector('.ad-form__submit');
 
 const addErrorClass = (input) => {
   const parentElement = input.parentElement;
@@ -22,8 +30,6 @@ const removeErrorClass = (input) => {
 
   parentElement.classList.remove(ERROR_CLASS);
 };
-
-const titleInput = document.querySelector('#title');
 
 titleInput.addEventListener('input', (evt) => {
   const valueLength = titleInput.value.length;
@@ -45,8 +51,6 @@ titleInput.addEventListener('invalid', (evt) => {
   }
 });
 
-const priceInput = document.querySelector('#price');
-
 priceInput.addEventListener('invalid', (evt) => {
   if (evt.target.validity.valueMissing) {
     addErrorClass(evt.target);
@@ -55,7 +59,7 @@ priceInput.addEventListener('invalid', (evt) => {
 
 priceInput.addEventListener('input', (evt) => {
   const value = +evt.target.value;
-  const minValue = +evt.target.getAttribute('min');
+  const minValue = +evt.target.min;
 
   if (value < minValue || value > MAX_PRICE_VALUE) {
     addErrorClass(evt.target);
@@ -71,9 +75,9 @@ const checkRooms = (rooms, capacity) => {
 
   [...capacityOptions].forEach((option) => {
     if (!RoomsOptions[rooms.value].includes(option.value)) {
-      option.setAttribute('disabled', '');
+      option.disabled = true;
     } else {
-      option.removeAttribute('disabled', '');
+      option.disabled = false;
     }
   });
 
@@ -86,9 +90,6 @@ const checkRooms = (rooms, capacity) => {
   capacity.reportValidity();
 };
 
-const roomNumberSelect = document.querySelector('#room_number');
-const capacitySelect = document.querySelector('#capacity');
-
 roomNumberSelect.addEventListener('change', () => {
   checkRooms(roomNumberSelect, capacitySelect);
 });
@@ -96,8 +97,6 @@ roomNumberSelect.addEventListener('change', () => {
 capacitySelect.addEventListener('change', () => {
   checkRooms(roomNumberSelect, capacitySelect);
 });
-
-const formButtonSubmit = document.querySelector('.ad-form__submit');
 
 formButtonSubmit.addEventListener('click', (evt) => {
   const form = document.querySelector('.ad-form');

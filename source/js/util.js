@@ -37,13 +37,11 @@ const showMessage = (name) => {
     }
   };
 
-  const documentArbitraryClickHandler = () => {
-    messageElement.remove();
-    document.removeEventListener('click', documentArbitraryClickHandler);
-  };
-
   document.addEventListener('keydown', documentEscKeydownHandler);
-  document.addEventListener('click', documentArbitraryClickHandler);
+
+  document.addEventListener('click', () => {
+    messageElement.remove();
+  });
 
 };
 

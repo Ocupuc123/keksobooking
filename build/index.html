@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="css/normalize.css" />
-    <link rel="stylesheet" href="leaflet/leaflet/leaflet.css">
+    <link rel="stylesheet" href="vendors/leaflet/leaflet.css">
+    <link rel="stylesheet" href="vendors/nouislider/nouislider.css">
     <link rel="stylesheet" href="css/style.css" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <title>Кексобукинг</title>
@@ -106,6 +107,7 @@
           <fieldset class="ad-form__element">
             <label class="ad-form__label" for="price">Цена за ночь, руб.</label>
             <input id="price" name="price" type="number" placeholder="5000" required max="1000000" min="0" />
+            <div class="ad-form__slider"></div>
           </fieldset>
           <fieldset class="ad-form__element ad-form__element--time">
             <label class="ad-form__label" for="timein">Время заезда и выезда</label>
@@ -229,7 +231,9 @@
         <button type="button" class="error__button">Попробовать снова</button>
       </div>
     </template>
-    <script src="./leaflet/leaflet/leaflet.js" defer></script>
-    <script src="./js/main.js" defer type="module"></script>
+    <script src="./vendors/leaflet/leaflet.js" defer></script>
+    <script src="./vendors/nouislider/nouislider.min.js" defer></script>
+    <script src="./vendors/lodash.min.js" defer></script>
+    <script src="./js/main.bundle.js" defer></script>
   </body>
 </html>
