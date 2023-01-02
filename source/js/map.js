@@ -32,7 +32,7 @@ L.tileLayer(
 
 const mainPinMarker = L.marker(mainPinMarkerPosition, {
   icon: L.icon({
-    iconUrl: '../vendors/leaflet/images/main-pin.svg',
+    iconUrl: './vendors/leaflet/images/main-pin.svg',
     iconSize: [52, 52],
     iconAnchor: [25, 52],
   }),
@@ -54,7 +54,7 @@ const createMarker = (offer) => {
   const { location } = offer;
   const marker = L.marker([location.lat, location.lng], {
     icon: L.icon({
-      iconUrl: '../vendors/leaflet/images/pin.svg',
+      iconUrl: './vendors/leaflet/images/pin.svg',
       iconSize: [40, 40],
       iconAnchor: [20, 40],
     })
